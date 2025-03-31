@@ -46,14 +46,8 @@ export async function updateContact(id, updatedData) {
   const index = contacts.findIndex((contact) => contact.id === id);
   if (index === -1) return null;
 
-  //   const updatedContact = { ...contacts[index], ...updatedData
-  // };
-  const updatedContact = {
-    ...contacts[index],
-    ...(updatedData.name && { name: updatedData.name }),
-    ...(updatedData.email && { email: updatedData.email }),
-    ...(updatedData.phone && { phone: updatedData.phone }),
-  };
+  const updatedContact = { ...contacts[index], ...updatedData };
+
   contacts[index] = updatedContact;
   await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
   return updatedContact;
