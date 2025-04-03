@@ -56,6 +56,20 @@ export const updateContactById = async (req, res, next) => {
   }
 };
 
+export const updateStatusContact = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { favorite } = req.body;
+    const updatedContact = await updateContact(id, { favorite });
+    if (!updatedContact) {
+      throw HttpError(404, `Contact with id=${id} not found`);
+    }
+    res.status(200).json(updatedContact);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const deleteContact = async (req, res, next) => {
   const { id } = req.params;
   try {
