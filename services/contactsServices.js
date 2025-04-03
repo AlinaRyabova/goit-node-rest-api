@@ -10,6 +10,7 @@ export const addContact = (name, email, phone) =>
 // Функція для отримання контакту за ID
 export const getContactById = (id) => Contact.findByPk(id);
 
+// Функція для оновлення контакту за ID
 export const updateContact = async (id, updatedContact) => {
   const contact = await getContactById(id);
   if (!contact) return null;
