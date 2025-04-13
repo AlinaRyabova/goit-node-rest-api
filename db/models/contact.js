@@ -19,7 +19,11 @@ const Contact = sequelize.define("Contact", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  owner: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-// Contact.sync();
+// Contact.sync({ alter: true });
 export default Contact;
