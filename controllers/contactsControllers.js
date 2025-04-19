@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import {
   listContacts,
   getContactById,
@@ -34,9 +35,17 @@ export const getOneContact = async (req, res, next) => {
 
 export const createContact = async (req, res, next) => {
   try {
+    const { name, email, phone, favorite } = req.body;
+
     const { id: owner } = req.user;
-    const { name, email, phone } = req.body;
-    const newContact = await addContact({ ...req.body, owner });
+
+    const newContact = await addContact({
+      name,
+      email,
+      phone,
+      favorite,
+      owner,
+    });
     res.status(201).json(newContact);
   } catch (error) {
     next(error);
@@ -47,13 +56,13 @@ export const updateContactById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { id: owner } = req.user;
-    const data = await updateContact({ id, owner }, req.body);
+    const contact = await updateContact(id, owner, req.body);
 
-    if (!DataTransferItem) {
+    if (!contact) {
       throw HttpError(404, `Contact with id=${id} not found`);
     }
 
-    res.status(200).json(data);
+    res.status(200).json(contact);
   } catch (error) {
     next(error);
   }
@@ -64,7 +73,12 @@ export const updateStatusContact = async (req, res, next) => {
     const { id } = req.params;
     const { id: owner } = req.user;
     const { favorite } = req.body;
-    const data = await updateContact({ id, owner, favorite });
+
+    if (typeof favorite !== "boolean") {
+      throw HttpError(400, "Missing field favorite");
+    }
+
+    const data = await updateContact(id, owner, { favorite });
     if (!data) {
       throw HttpError(404, `Contact with id=${id} not found`);
     }
@@ -78,12 +92,13 @@ export const deleteContact = async (req, res, next) => {
   const { id } = req.params;
   const { id: owner } = req.user;
   try {
-    const data = await removeContact({ id, owner });
-    if (!data) {
+    const contact = await removeContact(id, owner);
+    if (!contact) {
       throw HttpError(404, `Contact with id=${id} not found`);
     }
     res.json({
       message: "Delete successfully",
+      contact,
     });
   } catch (error) {
     next(error);
