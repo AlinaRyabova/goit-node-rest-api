@@ -10,7 +10,7 @@ export const findUser = (query) =>
   });
 
 export const signupUser = async (data) => {
-  const { email, password, username } = data;
+  const { email, password } = data;
   const user = await User.findOne({ where: { email } });
   if (user) {
     throw HttpError(409, `Email already in use`);
