@@ -85,6 +85,11 @@ export const logoutUserController = async (req, res) => {
 export const updateAvatarController = async (req, res, next) => {
   try {
     const { id } = req.user;
+
+    if (!req.file) {
+      return next(HttpError(400, "Avatar file is missing"));
+    }
+
     const { path: oldPath, filename } = req.file;
     const newFileName = `${id}_${filename}`;
     const newPath = path.join(avatarsDir, newFileName);
