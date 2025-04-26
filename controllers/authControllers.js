@@ -7,6 +7,8 @@ import {
   signupUser,
   signinUser,
   logoutUser,
+  verifyUser,
+  resendVerifyEmail,
 } from "../services/authServices.js";
 import User from "../db/models/user.js";
 
@@ -41,6 +43,32 @@ export const signupController = async (req, res, next) => {
     });
   } catch (error) {
     res.status(409).json({ message: "Email in use" });
+  }
+};
+
+export const verifyController = async (req, res, next) => {
+  try {
+    const { verificationToken } = req.params;
+    await verifyUser(verificationToken);
+
+    res.status(200).json({
+      message: "Verification successful",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resendVerifyEmailController = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    await resendVerifyEmail(email);
+
+    res.status(200).json({
+      message: "Verify email resend",
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
