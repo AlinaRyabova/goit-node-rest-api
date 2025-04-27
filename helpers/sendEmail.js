@@ -14,16 +14,16 @@ const nodemailerConfig = {
 };
 const transport = nodemailer.createTransport(nodemailerConfig);
 
-const data = {
-  to: "xefide8437@cxnlab.com",
-  subject: "Hello",
-  html: "<h1>Hello! Test</h1>",
-};
+// const data = {
+//   to: "xefide8437@cxnlab.com",
+//   subject: "Hello",
+//   html: "<h1>Hello! Test</h1>",
+// };
 
-transport
-  .sendMail({ ...data, from: `Alina Riabova <${UKR_NET_EMAIL}>` })
-  .then(() => console.log("Email sent successfully"))
-  .catch((error) => console.log("Error sending email:", error.message));
+// transport
+//   .sendMail({ ...data, from: `Alina Riabova <${UKR_NET_EMAIL}>` })
+//   .then(() => console.log("Email sent successfully"))
+//   .catch((error) => console.log("Error sending email:", error.message));
 
 export const sendEmail = (data) => {
   const email = { ...data, from: `Alina Riabova <${UKR_NET_EMAIL}>` };

@@ -69,7 +69,7 @@ export const resendVerifyEmail = async (email) => {
   }
 
   if (user.verify) {
-    throw HttpError(400, `Email already verified`);
+    throw HttpError(400, `Verification has already been passed`);
   }
 
   const verifyEmail = createVerifyEmail(email, user.verificationToken);
